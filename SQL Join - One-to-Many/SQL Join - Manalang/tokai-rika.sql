@@ -63,12 +63,27 @@ INSERT INTO employee
 	VALUES(5, '2014-204055', 4, 2);
     
 
-SELECT employee.id, employee.id, person.last_name, department.codename
+SELECT employee.id, employee.emp_idn, person.last_name, department.codename
 	FROM employee
 		INNER JOIN person ON employee.person_id = person.id
         INNER JOIN department ON employee.department_id = department.id;
+        
+CREATE VIEW employee_details
+AS SELECT
+	first_name,
+    last_name,
+    contact_number,
+    address,
+    emp_idn,
+    codename
+FROM
+	employee
+INNER JOIN
+	person USING (id)
+INNER JOIN
+	department USING (id)
     
 
-	
+SELECT * FROM employee_details;
 
     
