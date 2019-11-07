@@ -99,3 +99,8 @@ INSERT INTO department
 INSERT INTO department
 	VALUES(4, 'TRP-IN HOUSE');
     
+SELECT employee.id, person.last_name, position.ranking
+FROM employee
+	INNER JOIN person ON employee.person_id = person.id
+	INNER JOIN position ON employee.position_id = position.id;
+    
