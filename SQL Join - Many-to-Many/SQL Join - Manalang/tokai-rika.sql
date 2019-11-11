@@ -88,6 +88,64 @@ INNER JOIN
     
 /*Many-to-many relationship*/
 
-CREATE TABLE order_detail (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+CREATE TABLE order_form(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, order_date VARCHAR(45) NOT NULL,
+total DOUBLE NOT NULL, tax DOUBLE NOT NULL, delivery_date VARCHAR(45) NOT NULL);
 
+INSERT INTO order_form
+	VALUES(1234, 'July 06, 2010', 14521, 156, 'October 15, 2010');
     
+INSERT INTO order_form
+    VALUES(1235, 'January 15, 2012', 49756, 1524, 'May 31, 2012');
+    
+INSERT INTO order_form
+    VALUES(1236, 'April 24, 2013', 56487, 1765, 'August 1, 2013');
+    
+INSERT INTO order_form
+    VALUES(1237, 'December 12, 2014', 16421, 684, 'March 16, 2015');
+    
+INSERT INTO order_form
+    VALUES(1238, 'July 08, 2016', 46872, 945, 'December 27, 2016');
+    
+
+CREATE TABLE order_detail(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, price DOUBLE NOT NULL, 
+quantity INT NOT NULL, subtotal DOUBLE NOT NULL, of_id INT, sp_id INT, FOREIGN KEY (of_id) 
+REFERENCES order_form(id), FOREIGN KEY (sp_id) REFERENCES supplier_parts(id));
+
+INSERT INTO order_detail
+	VALUES(1, 1500, 20, 30000, 1238, 1);
+
+INSERT INTO order_detail
+	VALUES(2, 500, 30, 15000, 1237, 2);
+    
+INSERT INTO order_detail
+	VALUES(3, 250, 100, 25000, 1236, 3);
+    
+INSERT INTO order_detail
+	VALUES(4, 1000, 55, 55000, 1235, 4);
+    
+INSERT INTO order_detail
+	VALUES(5, 750, 75, 56250, 1234, 5);
+    
+SELECT order_detail.id, supplier_parts.product_desc, supplier_parts.supp_code, order_detail.subtotal,
+	order_form.order_date, order_form.delivery_date
+	FROM order_detail
+		INNER JOIN order_form ON order_detail.of_id = order_form.id
+        INNER JOIN supplier_parts ON order_detail.sp_id = supplier_parts.id;
+
+CREATE TABLE supplier_parts(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, product_desc VARCHAR(100) NOT NULL,
+supp_code VARCHAR(45) NOT NULL, manufactured_date VARCHAR(45) NOT NULL);
+
+INSERT INTO supplier_parts
+	VALUES(1, 'Touchpad', 'AK12GB5', 'September 20, 2016');
+
+INSERT INTO supplier_parts
+	VALUES(2, 'Steering Switch', 'BZ45H12', 'January 10, 2016');
+    
+INSERT INTO supplier_parts
+	VALUES(3, 'Seatbelt', '12ZCM4L', 'June 01, 2013');
+    
+INSERT INTO supplier_parts
+	VALUES(4, 'Outer Mirror', 'DDL091G', 'February 06, 2012');
+    
+INSERT INTO supplier_parts
+	VALUES(5, 'Speed Sensor', '09LOPQS', 'August 10, 2010');
